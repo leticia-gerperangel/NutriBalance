@@ -46,7 +46,7 @@ graph TD
 | [USDA FoodData Central](https://fdc.nal.usda.gov/) | API + CSV | Foods, nutrients, categories, portions |
 | [NIH/NCBI — NASEM DRI](https://www.ncbi.nlm.nih.gov/books/NBK56068/) | Web tables | RDA/AI and UL recommendations |
  
-- **Foundation Foods** (~436 foods) and **SR Legacy** (~7,794 foods) via USDA `/foods/list` endpoint
+- **Foundation Foods** (394 foods) and **SR Legacy** (7,793 foods) via USDA `/foods/list` endpoint
 - **nutrient.csv** — USDA nutrient catalog used to map nutrient numbers from the API to internal USDA IDs. Required before running the ETL pipeline.
 - Nutritional recommendations cover 22 nutrients across sex, age range (19–30, 31–50, 51–70, 71+) and physiological condition (none, pregnancy, lactation)
 
@@ -101,7 +101,7 @@ python -m pytest test -v
 
 ## Key design decisions
 
-- `/foods/list` **as the single API source**: this endpoint returns complete nutrient data for each food in a single paginated call, eliminating the need for a second request per food item. Alternative endpoints were evaluated and discarded due to timeout issues and impractical request volumes for more than 8000 foods.
+- `/foods/list` **as the single API source**: this endpoint returns complete nutrient data for each food in a single paginated call, eliminating the need for a second request per food item. Alternative endpoints were evaluated and discarded due to timeout issues and impractical request volumes for over 8000 foods.
 
 - `nutrient_catalog` **as an ETL prerequisite**: the USDA API identifies nutrients by a number (`nutrient_nbr`) instead of an internal ID. Before the ETL runs, `nutrient.csv` is loaded into an auxiliary table that stores that mapping so the pipeline can correctly link API nutrient data to the database.
 
@@ -122,6 +122,7 @@ python -m pytest test -v
 
 - Docker makes a project reproducible - I initially wanted to deploy the project online but each service required a different platform. Docker solved this by packaging everything together, so anyone can run the full stack with a single command regardless of their environment.
 
+---
 
 ## Notes
 
